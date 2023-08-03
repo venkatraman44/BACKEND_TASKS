@@ -56,9 +56,9 @@ class FieldFormatter extends FormatterBase {
 
     foreach ($items as $delta => $item) {
       $value = $item->value / 100;
-      $concat = $this->getSetting('concat');
+      $concatinate = $this->getSetting('concat');
       $elements[$delta] = [
-        '#markup' => '<p>' . $concat . $value . '</p>',
+        '#markup' => '<p>' . $concatinate . $value . '</p>',
       ];
     }
 
