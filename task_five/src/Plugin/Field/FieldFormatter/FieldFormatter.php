@@ -48,6 +48,7 @@ class FieldFormatter extends FormatterBase {
     $summary[] = $this->t("concatenate with : @concat", ["@concat" => $this->getSetting('concat')]);
     return $summary;
   }
+
   /**
    * {@inheritdoc}
    */
@@ -64,4 +65,5 @@ class FieldFormatter extends FormatterBase {
 
     return $elements;
   }
+
 }
