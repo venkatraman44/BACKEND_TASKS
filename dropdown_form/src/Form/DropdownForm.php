@@ -110,7 +110,8 @@ class DropdownForm extends FormBase {
 
     if ($triggering_element_name === 'electronic_item') {
       return $form['models'];
-    } elseif ($triggering_element_name === 'models') {
+    }
+    elseif ($triggering_element_name === 'models') {
       return $form['color'];
     }
   }

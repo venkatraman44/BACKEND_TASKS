@@ -1,10 +1,15 @@
 <?php
 
-use Drupal\Core\Database\Schema\Schema;
+/**
+ * @file
+ * Some comment.
+ */
+
 /**
  * @file
  * Install, update and uninstall functions for the dropdown_form module.
  */
+
 /**
  * Implements hook_update().
  */
@@ -28,7 +33,7 @@ function dropdown_form_update_100504() {
     ],
     'primary key' => ['id'],
   ];
-  $schema->createTable($electronic_items,$electronic_items_schema);
+  $schema->createTable($electronic_items, $electronic_items_schema);
   $elec_items = [
       ['name' => 'LAPTOPS'],
       ['name' => 'MOBILE'],
@@ -95,8 +100,8 @@ function dropdown_form_update_100504() {
   foreach ($model_names as $model) {
     $database->insert($model_name)
       ->fields([
-      'electronic_items_id' => $model['electronic_items_id'],
-      'name' => $model['name'],
+        'electronic_items_id' => $model['electronic_items_id'],
+        'name' => $model['name'],
       ])
       ->execute();
   }
@@ -205,9 +210,9 @@ function dropdown_form_update_100504() {
   foreach ($color_name as $color) {
     $database->insert($colors)
       ->fields([
-      'models_id' => $color['models_id'],
-      'name' => $color['name'],
-    ])
+        'models_id' => $color['models_id'],
+        'name' => $color['name'],
+      ])
       ->execute();
   }
 }
