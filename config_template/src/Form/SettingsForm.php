@@ -39,24 +39,27 @@ final class SettingsForm extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Title'),
       '#required' => TRUE,
+      '#default_value' => $this->config('config_template.settings')->get('title'),
     ];
 
     $text_format = 'full_html';
-    if ($config->get('paragraph')['format']) {
-      $text_format = $config->get('paragraph')['format'];
+    if ($this->config('config_template.settings')->get('paragraph')['format']) {
+      $text_format = $this->config('config_template.settings')->get('paragraph')['format'];
     }
 
     $form['paragraph'] = [
       '#type' => 'text_format',
-      '#title' => $this->t('Paragraph'),
+      '#title' => $this->t('paragraph'),
       '#required' => TRUE,
       '#format' => $text_format,
+      '#default_value' => $this->config('config_template.settings')->get('paragraph'),
     ];
 
     $form['color_code'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Color Code'),
       '#required' => TRUE,
+      '#default_value' => $this->config('config_template.settings')->get('color_code'),
     ];
 
     return parent::buildForm($form, $form_state);
