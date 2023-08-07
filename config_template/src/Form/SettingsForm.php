@@ -42,8 +42,8 @@ final class SettingsForm extends ConfigFormBase {
     ];
 
     $text_format = 'full_html';
-    if ($config->get('text')['format']) {
-      $text_format = $config->get('text')['format'];
+    if ($config->get('paragraph')['format']) {
+      $text_format = $config->get('paragraph')['format'];
     }
 
     $form['paragraph'] = [

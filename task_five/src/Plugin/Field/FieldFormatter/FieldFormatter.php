@@ -10,7 +10,7 @@ use Drupal\Core\Field\FieldItemListInterface;
  * Plugin implementation of the 'field_formatter' formatter.
  *
  * @FieldFormatter(
- *   id = "",
+ *   id = "format_task",
  *   label = @Translation("field Formatter"),
  *   field_types = {
  *     "integer"
