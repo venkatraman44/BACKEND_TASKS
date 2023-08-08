@@ -6,11 +6,12 @@
 function mail_cron_mail($key, &$message, $params) {
   switch ($key) {
     case 'logs_email':
-      $message['subject'] = t('Logs Content');
-      $message['body'][] = t('Here are the logs contents:');
-      foreach ($params['logs'] as $log) {
-        $message['body'][] = t('Title: @title', ['@title' => $log->getTitle()]);
-      }
+      $token_service = \Drupal::token();
+      $subject = $token_service->replace($params['subject'], ['node' => $params]);
+      $body = $token_service->replace($params['body'], ['node' => $params]);
+      $message['subject'] = $subject;
+      // print_r($subject);exit;
+      $message['body'][] = $body;
       break;
   }
 }
@@ -22,26 +23,45 @@ function mail_cron_cron() {
   // exit;
   $last_cron_run = \Drupal::state()->get('lastcronrun');
   $current_time = time();
+  //print_r($current_time);exit;
 
-  if (empty($last_cron_run) || ($current_time - $last_cron_run) >= 86400) {
+  if (empty($last_cron_run) || ($current_time - $last_cron_run) >= 1) {
     // Get all nodes of the "logs" content type.
     $query = \Drupal::entityQuery('node')
       ->condition('type', 'logs')
-      ->sort('created', 'ASC');
+      ->condition('created', $last_cron_run, '>')
+      ->sort('created', 'ASC')
+      ->accessCheck(FALSE);
     $nids = $query->execute();
 
     if (!empty($nids)) {
-      $logs = \Drupal\node\Entity\Node::loadMultiple($nids);
+      foreach ($nids as $nid) {
+        $node = \Drupal\node\Entity\Node::load($nid);
+        $token_data = ['node' => $node];
+        // Load the email subject and body from mail_cron.settings.
+        $subject = \Drupal::config('mail_cron.settings')->get('subject');
+        $body = \Drupal::config('mail_cron.settings')->get('text');
+        // print_r($subject);print_r($body);exit;
 
-      $mail_params = [
-        'logs' => $logs,
-      ];
+        // Replace tokens in the subject and body.
+        $token_service = \Drupal::token();
+        $subject = $token_service->replace($subject, $token_data);
+        $body = $token_service->replace($body, $token_data);
+        // print_r($subject);exit;
 
-      // Send email.
-      $to = 'kmlvenkat@gmail.com'; // Change to the actual email address.
-      $language_code = \Drupal::currentUser()->getPreferredLangcode();
-      $params['context'] = 'logs_email';
-      \Drupal::service('plugin.manager.mail')->mail('mail_cron', 'logs_email', $to, $language_code, $mail_params);
+      // Prepare the mail parameters.
+        $mail_params = [
+          'subject' => $subject,
+          'body' => $body,
+        ];
+
+
+        // Send email.
+        $to = 'kmlvenkat@gmail.com'; // Change to the actual email address.
+        $language_code = \Drupal::currentUser()->getPreferredLangcode();
+        $params['context'] = 'logs_email';
+        \Drupal::service('plugin.manager.mail')->mail('mail_cron', 'logs_email', $to, $language_code, $mail_params);
+      }
     }
 
     // Update the last cron run timestamp.
