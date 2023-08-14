@@ -1,0 +1,7 @@
+config_assessment.custom_config:
+  path: '/custom-configgg'
+  defaults:
+    _title: 'Custom config'
+    _form: 'Drupal\config_assessment\Form\CustomConfigurationForm'
+  requirements:
+    _permission: 'access content'

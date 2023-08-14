@@ -34,26 +34,24 @@ final class Assesment1Controller extends ControllerBase {
    */
   public function task() {
     $query = $this->database->select('assessment_information')
-      ->fields('assessment_information',
-      ['firstname', 'lastname', 'email', 'gender', 'phone'])
+      ->fields('assessment_information')
       ->execute();
-    $result = [];
+    $rows = [];
     foreach ($query as $row) {
-      $result[] = [
-        '#markup' => $this->t(' @first | @last | @email | @gender | @phone', [
-          '@first' => $row->firstname,
-          '@last' => $row->lastname,
-          '@email' => $row->email,
-          '@gender' => $row->gender,
-          '@phone' => $row->phone,
-        ]),
-
+      $rows[] = [
+        'id' => $row->id,
+        'firstname' => $row->firstname,
+        'lastname' => $row->lastname,
+        'email' => $row->email,
+        'gender' => $row->gender,
+        'phone' => $row->phone,
       ];
     }
-    return [
+    $build = [
       '#theme' => 'custom_theme',
-      '#rows' => $result,
+      '#rows' => $rows,
     ];
+    return $build;
   }
 
 }
