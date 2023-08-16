@@ -10,6 +10,7 @@ function mail_cron_mail($key, &$message, $params) {
       $subject = $token_service->replace($params['subject'], ['node' => $params]);
       $body = $token_service->replace($params['body'], ['node' => $params]);
       $message['subject'] = $subject;
+      $message['headers']['Content-Type'] = 'text/html';
       // print_r($subject);exit;
       $message['body'][] = $body;
       break;
