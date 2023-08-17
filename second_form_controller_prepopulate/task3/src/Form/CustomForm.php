@@ -32,6 +32,10 @@ class CustomForm extends FormBase {
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager service.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The currently logged-in user account.
+   * @param \Drupal\Core\Database\Connection $database
+   *   The database connection service.
    */
   public function __construct(EntityTypeManagerInterface $entityTypeManager, AccountInterface $account, Connection $database) {
     $this->entityTypeManager = $entityTypeManager;
