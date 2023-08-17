@@ -4,6 +4,8 @@ namespace Drupal\mail_cron\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Implements the example form.
