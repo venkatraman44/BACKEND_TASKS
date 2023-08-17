@@ -9,6 +9,33 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements the example form.
  */
 class TokenForm extends ConfigFormBase {
+
+  /**
+   * The module handler service.
+   *
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   */
+  protected $moduleHandler;
+
+  /**
+   * TokenForm constructor.
+   *
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler service.
+   */
+  public function __construct(ModuleHandlerInterface $module_handler) {
+    $this->moduleHandler = $module_handler;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('module_handler')
+    );
+  }
+
   const RESULT = "mail_cron.settings";
 
   /**
@@ -43,7 +70,7 @@ class TokenForm extends ConfigFormBase {
       '#default_value' => $config->get("text"),
     ];
 
-    if (\Drupal::moduleHandler()->moduleExists('token')) {
+    if ($this->moduleHandler->moduleExists('token')) {
       $form['tokens'] = [
         '#title' => $this->t('Tokens'),
         '#type' => 'container',

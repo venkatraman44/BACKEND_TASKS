@@ -1,15 +1,56 @@
-<?php declare(strict_types = 1);
+<?php
+
+declare(strict_types = 1);
 
 namespace Drupal\configurationtask\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Configure Config assessment settings for this site.
  */
 class ConfiForm extends ConfigFormBase {
+
+  /**
+   * The configuration factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a new ConfiForm object.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The configuration factory service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
+   */
+  public function __construct(ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager) {
+    $this->configFactory = $config_factory;
+    $this->entityTypeManager = $entity_type_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -29,7 +70,7 @@ class ConfiForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
-    $config = \Drupal::config('configurationtask.settings');
+    $config = $this->configFactory->get('configurationtask.settings');
     $tag_name = $config->get('tags_vocabulary');
     $form['title'] = [
       '#type' => 'textfield',
@@ -45,7 +86,7 @@ class ConfiForm extends ConfigFormBase {
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Tags'),
       '#target_type' => 'taxonomy_term',
-      '#default_value' => \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tag_name),
+      '#default_value' => $this->entityTypeManager->getStorage('taxonomy_term')->load($tag_name),
     ];
 
     return parent::buildForm($form, $form_state);
