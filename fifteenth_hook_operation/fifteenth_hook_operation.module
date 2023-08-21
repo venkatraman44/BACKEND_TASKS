@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Some comment.
+ */
+
+use Drupal\core\Url;
+
+/**
+ * Implements hook_entity_operation().
+ */
+function fifteenth_hook_operation_entity_operation($entity) {
+  $operations = [];
+  $operations['title_out'] = [
+    'title' => t('Node Title'),
+    'weight' => '10',
+    'url' => Url::fromRoute('fifteenth_hook_operation.example', ['node' => $entity->id()]),
+  ];
+  return $operations;
+}
