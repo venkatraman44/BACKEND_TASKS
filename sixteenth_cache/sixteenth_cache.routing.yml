@@ -1,0 +1,11 @@
+sixteenth_cache.example:
+  path: '/customCache/{node}'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\sixteenth_cache\Controller\CustomController::title'
+  requirements:
+    _permission: 'access content'
+  options:
+    parameters:
+      node:
+        type: 'entity:node'

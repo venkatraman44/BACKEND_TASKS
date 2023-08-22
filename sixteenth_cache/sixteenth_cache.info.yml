@@ -1,0 +1,5 @@
+name: 'sixteenth_cache'
+type: module
+description: 'invalidating cache'
+package: Custom
+core_version_requirement: ^10
