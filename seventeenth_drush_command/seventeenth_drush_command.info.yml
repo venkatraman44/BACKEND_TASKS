@@ -1,0 +1,5 @@
+name: 'seventeenth_drush_command'
+type: module
+description: 'drush command to make instance go to maintainance mode'
+package: Custom
+core_version_requirement: ^10

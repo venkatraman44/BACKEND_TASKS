@@ -1,0 +1,6 @@
+services:
+  seventeenth_drush_command.commands:
+    class: \Drupal\seventeenth_drush_command\Commands\DrushMaintainance
+    tags:
+      - { name: drush.command }
+    arguments: ['@messenger', '@state']
